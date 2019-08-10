@@ -1,2 +1,4 @@
-# noticeboard_kubamacierz
-symfony 3.4 project
+noticeboard
+===========
+
+A Symfony project created on August 10, 2019, 10:49 am.
