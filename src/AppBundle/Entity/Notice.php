@@ -170,6 +170,13 @@ class Notice
         $this->categories = new ArrayCollection();
     }
 
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="notices")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
 
 
     /**
@@ -206,5 +213,29 @@ class Notice
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \AppBundle\Entity\User|null $user
+     *
+     * @return Notice
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \AppBundle\Entity\User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
