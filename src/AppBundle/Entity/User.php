@@ -39,6 +39,7 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->notices = new ArrayCollection();
+        $this->roles = ["ROLE_USER"];
     }
 
     // Relations

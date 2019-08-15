@@ -1,0 +1,18 @@
+{% extends "::base.html.twig" %}
+
+
+
+
+{% block body %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <h2>Jesteś już zalogowany jako {{ username }}</h2>
+
+    {% else %}
+    <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1>
+
+    <ul>
+        <li><a href="{{ path('fos_user_security_login') }}">Zaloguj się</a></li>
+        <li><a href="{{ path('fos_user_registration_register') }}">Zarejestruj się</a></li>
+    </ul>
+    {% endif %}
+{% endblock %}

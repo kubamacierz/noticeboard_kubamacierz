@@ -7,6 +7,9 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>User name</th>
+                <th>User email</th>
+                <th>Last login date & time</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -14,6 +17,12 @@
         {% for user in users %}
             <tr>
                 <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% if user.lastLogin %}
+                    {{ user.lastLogin|date('Y-m-d H:i:s')}}
+                    {% endif %}
+                </td>
                 <td>
                     <ul>
                         <li>
@@ -22,6 +31,9 @@
                         <li>
                             <a href="{{ path('user_edit', { 'id': user.id }) }}">edit</a>
                         </li>
+{#                        <li>#}
+{#                            <a href="{{ path('user_addrole', { 'username': user.username }) }}">zmień rolę</a>#}
+{#                        </li>#}
                     </ul>
                 </td>
             </tr>

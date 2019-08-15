@@ -2,7 +2,8 @@
 
 {% block body %}
     <ul>
-        <li><a href="{{ path('user_new') }}">Dodaj/edytuj/usuń użytkownika</a></li>
-{#        <li><a href="{{ path('') }}"></a></li>#}
+        <li><a href="{{ path('notice_new') }}">Dodaj ogłoszenie</a></li>
+        <li><a href="{{ path('app_notice_shownoticesbyuserid', { 'id': id }) }}">Wyświetl swoje ogłoszenia </a></li>
+{#        <li>{{ id }}</li>#}
     </ul>
 {% endblock %}
