@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Notice
@@ -244,5 +245,13 @@ class Notice
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getUser_Id(\AppBundle\Entity\User $user)
+    {
+        $this->getUser()->getId();
+//        $userId = $user->getId();
+        return $this;
+
     }
 }

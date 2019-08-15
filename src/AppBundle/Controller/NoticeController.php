@@ -56,9 +56,7 @@ class NoticeController extends Controller
 
             return $this->redirectToRoute('notice_show', array('id' => $notice->getId()));
         }
-//        $expiration = time() + 604800;
-//        $dt = new DateTime("$expiration");
-//        $expDate = $dt->format('Y-m-d H:i:s');
+
         return $this->render('notice/new.html.twig', array(
             'notice' => $notice,
             'form' => $form->createView(),
@@ -74,6 +72,7 @@ class NoticeController extends Controller
     public function showAction(Notice $notice)
     {
         $deleteForm = $this->createDeleteForm($notice);
+
 
         return $this->render('notice/show.html.twig', array(
             'notice' => $notice,

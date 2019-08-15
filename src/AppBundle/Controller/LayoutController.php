@@ -23,8 +23,11 @@ class LayoutController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function showFirstPageAction(UserInterface $user)
+    public function showFirstPageAction(UserInterface $user = null)
     {
+        if($user === null){
+            return $this->render('AppBundle:LayoutController:first_menu.html.twig');
+        }
         $userName = $user->getUsername();
         return $this->render('AppBundle:LayoutController:first_menu.html.twig', ['username' => $userName]);
     }
