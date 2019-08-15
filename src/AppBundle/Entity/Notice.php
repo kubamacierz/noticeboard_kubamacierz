@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * Notice
@@ -168,6 +169,12 @@ class Notice
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+
+        $expiration = time() + 604800;
+        $dt = new DateTime("@$expiration");
+        $expDate = $dt->format('Y-m-d H:i:s');
+
+        $this->expiration = $expDate;
     }
 
     /**

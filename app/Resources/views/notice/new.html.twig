@@ -4,8 +4,8 @@
     <h1>Notice creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_widget(form.expiration, { 'attr': { 'readonly': 'true' } }) }}
+    <input type="submit" value="Create" />
     {{ form_end(form) }}
 
     <ul>

@@ -6,7 +6,11 @@ use AppBundle\Entity\Notice;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+use DateTime;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Notice controller.
@@ -38,9 +42,10 @@ class NoticeController extends Controller
      * @Route("/new", name="notice_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, UserInterface $user)
     {
         $notice = new Notice();
+        $notice->setUser($user);
         $form = $this->createForm('AppBundle\Form\NoticeType', $notice);
         $form->handleRequest($request);
 
@@ -51,7 +56,9 @@ class NoticeController extends Controller
 
             return $this->redirectToRoute('notice_show', array('id' => $notice->getId()));
         }
-
+//        $expiration = time() + 604800;
+//        $dt = new DateTime("$expiration");
+//        $expDate = $dt->format('Y-m-d H:i:s');
         return $this->render('notice/new.html.twig', array(
             'notice' => $notice,
             'form' => $form->createView(),
