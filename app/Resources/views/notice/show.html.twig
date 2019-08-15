@@ -31,7 +31,10 @@
     <ul>
         <li>
 {#            <a href="{{ path('notice_index') }}">Back to the list</a>#}
-            <a href="{{ path('notice_index') }}">Back to the list</a>
+            <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.user_id.user.id}) }}">Wróć do listy swoich ogłoszeń</a>
+        </li>
+        <li>
+            <a href="{{ path('showallnotices') }}">Wróć do listy wszytkich ogłoszeń</a>
         </li>
         <li>
             <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edit</a>

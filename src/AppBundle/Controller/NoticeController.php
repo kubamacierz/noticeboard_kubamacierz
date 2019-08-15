@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Firewall\ContextListener;
 
 use DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,6 +33,20 @@ class NoticeController extends Controller
         $notices = $em->getRepository('AppBundle:Notice')->findAll();
 
         return $this->render('notice/index.html.twig', array(
+            'notices' => $notices,
+        ));
+    }
+
+    /**
+     * @Route("/showall", name="showallnotices")
+     */
+    public function showAllNoticesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $notices = $em->getRepository('AppBundle:Notice')->findAll();
+
+        return $this->render('AppBundle:LayoutController:show_all_notices.html.twig', array(
             'notices' => $notices,
         ));
     }
@@ -146,8 +161,9 @@ class NoticeController extends Controller
      */
     public function showNoticesByUserIdAction($id)
     {
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->find($id);
+        $user = $em->getRepository('AppBundle:User')->find($userId);
         $notices = $user->getNotices();
 
         return $this->render(':notice:index.html.twig', ['notices' => $notices]);

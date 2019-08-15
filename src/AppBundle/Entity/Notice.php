@@ -247,11 +247,11 @@ class Notice
         return $this->user;
     }
 
-    public function getUser_Id(\AppBundle\Entity\User $user)
+    public function getUser_Id()
     {
         $this->getUser()->getId();
 //        $userId = $user->getId();
         return $this;
-
     }
+
 }
