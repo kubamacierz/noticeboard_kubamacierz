@@ -37,7 +37,10 @@
             <a href="{{ path('showallnotices') }}">Wróć do listy wszytkich ogłoszeń</a>
         </li>
         <li>
-            <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edit</a>
+            <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edytuj to ogłoszenie</a>
+        </li>
+        <li>
+            <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

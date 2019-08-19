@@ -36,7 +36,14 @@
 
     <ul>
         <li>
-            <a href="{{ path('notice_new') }}">Create a new notice</a>
+            <a href="{{ path('notice_new') }}">Stwórz nowe ogłoszenie</a>
+        </li>
+        <li>
+            <a href="{{ path('app_notice_shownoticesbyuserid', { 'id': id }) }}">Wyświetl swoje ogłoszenia </a>
+        </li>
+
+        <li>
+            <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
     </ul>
 {% endblock %}

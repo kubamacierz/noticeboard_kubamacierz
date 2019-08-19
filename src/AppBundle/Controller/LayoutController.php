@@ -12,12 +12,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class LayoutController extends Controller
 {
     /**
-     * @Route("/menu", methods={"GET"})
+     * @Route("/menu", methods={"GET"}, name="menu")
      */
     public function showMenuAction(UserInterface $user)
     {
         $userId = $user->getId();
-        return $this->render('AppBundle:LayoutController:show_menu.html.twig', ['id' => $userId]);
+        $userName = $user->getUsername();
+        return $this->render('AppBundle:LayoutController:show_menu.html.twig', [
+            'id' => $userId,
+            'username' => $userName,
+        ]);
     }
 
     /**

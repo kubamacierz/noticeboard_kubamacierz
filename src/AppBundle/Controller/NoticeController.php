@@ -40,14 +40,17 @@ class NoticeController extends Controller
     /**
      * @Route("/showall", name="showallnotices")
      */
-    public function showAllNoticesAction()
+    public function showAllNoticesAction(UserInterface $user)
     {
         $em = $this->getDoctrine()->getManager();
 
         $notices = $em->getRepository('AppBundle:Notice')->findAll();
 
+        $userId = $user->getId();
+
         return $this->render('AppBundle:LayoutController:show_all_notices.html.twig', array(
             'notices' => $notices,
+            'id' => $userId,
         ));
     }
 

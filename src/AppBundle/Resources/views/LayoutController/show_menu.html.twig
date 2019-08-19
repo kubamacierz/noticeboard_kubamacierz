@@ -1,6 +1,11 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
+    <h2>Wybierz co chcesz zrobić</h2>
+    <p>Jesteś zalogowany jako
+    <span> <b><i>{{ username }}</b></i> </span>
+    </p>
+
     <ul>
         <li><a href="{{ path('notice_new') }}">Dodaj ogłoszenie</a></li>
         <li><a href="{{ path('app_notice_shownoticesbyuserid', { 'id': id }) }}">Wyświetl swoje ogłoszenia </a></li>
