@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends Controller
 {
     /**
-     * @Route("/user", name="user_index")
+     * @Route("/admin_menu", name="admin_menu")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function showAdminMenuAction()
     {
-        return $this->render(':user:index.html.twig', []);
+        return $this->render('AppBundle:LayoutController:admin_menu.html.twig', []);
     }
 
     /**

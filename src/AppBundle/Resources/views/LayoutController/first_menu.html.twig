@@ -4,9 +4,12 @@
 
 
 {% block body %}
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    {% if is_granted("ROLE_ADMIN") %}
+        {{render(path('admin_menu'))}}
+
+    {% elseif is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <h2>Jesteś już zalogowany jako {{ username }}</h2>
-        <a href="{{ path('app_layout_showmenu') }}">Powrót do Menu użytkownika</a>
+        <a href="{{ path('menu') }}">Powrót do Menu użytkownika</a>
 
     {% else %}
     <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1>
