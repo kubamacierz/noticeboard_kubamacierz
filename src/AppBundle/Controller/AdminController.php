@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class AdminController
@@ -18,9 +19,12 @@ class AdminController extends Controller
      * @Route("/admin_menu", name="admin_menu")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function showAdminMenuAction()
+    public function showAdminMenuAction(UserInterface $user)
     {
-        return $this->render('AppBundle:LayoutController:admin_menu.html.twig', []);
+        $adminName = $user->getUsername();
+        return $this->render('AppBundle:LayoutController:admin_menu.html.twig', [
+            'adminname' => $adminName
+        ]);
     }
 
     /**

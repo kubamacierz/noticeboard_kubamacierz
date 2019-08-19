@@ -5,18 +5,20 @@
 
 {% block body %}
     {% if is_granted("ROLE_ADMIN") %}
-        {{render(path('admin_menu'))}}
+        {{ render(path('admin_menu')) }}
 
     {% elseif is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <h2>Jesteś już zalogowany jako {{ username }}</h2>
-        <a href="{{ path('menu') }}">Powrót do Menu użytkownika</a>
-
+        <ul>
+            <li><a href="{{ path('menu') }}">Powrót do Menu użytkownika</a></li>
+            <li><a href="{{ path('fos_user_security_logout') }}">Wyloguj się</a></li>
+        </ul>
     {% else %}
-    <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1>
+        <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1>
 
-    <ul>
-        <li><a href="{{ path('fos_user_security_login') }}">Zaloguj się</a></li>
-        <li><a href="{{ path('fos_user_registration_register') }}">Zarejestruj się</a></li>
-    </ul>
+        <ul>
+            <li><a href="{{ path('fos_user_security_login') }}">Zaloguj się</a></li>
+            <li><a href="{{ path('fos_user_registration_register') }}">Zarejestruj się</a></li>
+        </ul>
     {% endif %}
 {% endblock %}

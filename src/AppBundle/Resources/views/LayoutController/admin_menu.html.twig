@@ -2,6 +2,15 @@
 
 {% block body %}
     <h2>Menu administratora</h2>
+    <div>
+        <p>Jesteś zalogowany jako mistrz
+            <span> <b><i>{{ adminname }}</b></i> </span>
+        </p>
+    </div>
+    <div>
+        <a href="{{ path('fos_user_security_logout') }}">Wyloguj się</a>
+    </div>
+
     <ul>
         <li><a href="{{ path('user_index') }}">Wyświetl wsystkich użytkowników</a></li>
     </ul>
