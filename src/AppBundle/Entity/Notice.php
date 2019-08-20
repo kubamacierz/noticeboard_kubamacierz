@@ -223,6 +223,7 @@ class Notice
         return $this->categories;
     }
 
+
     /**
      * Set user.
      *

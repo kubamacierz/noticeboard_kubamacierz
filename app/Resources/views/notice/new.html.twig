@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Notice creation</h1>
+    <h1>Stwórz nowe ogłoszenie</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form.expiration, { 'attr': { 'readonly': 'true' } }) }}
-    <input type="submit" value="Create" />
+    <input type="submit" value="Utwórz" />
     {{ form_end(form) }}
 
     <ul>

@@ -24,9 +24,9 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="categoty_name", type="string", length=255)
+     * @ORM\Column(name="category_name", type="string", length=255)
      */
-    private $categotyName;
+    private $categoryName;
 
 
     /**
@@ -42,25 +42,25 @@ class Category
     /**
      * Set categotyName.
      *
-     * @param string $categotyName
+     * @param string $categoryName
      *
      * @return Category
      */
-    public function setCategotyName($categotyName)
+    public function setCategoryName($categoryName)
     {
-        $this->categotyName = $categotyName;
+        $this->categoryName = $categoryName;
 
         return $this;
     }
 
     /**
-     * Get categotyName.
+     * Get categoryName.
      *
      * @return string
      */
-    public function getCategotyName()
+    public function getCategoryName()
     {
-        return $this->categotyName;
+        return $this->categoryName;
     }
 
     // Relations
