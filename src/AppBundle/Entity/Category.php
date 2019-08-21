@@ -144,4 +144,9 @@ class Category
     {
         return $this->notices;
     }
+
+    public function __toString()
+    {
+        return $this->categoryName . '(id:' . $this->id . ')';
+    }
 }

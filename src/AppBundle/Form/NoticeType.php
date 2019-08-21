@@ -19,15 +19,15 @@ class NoticeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('title')->add('description')->add('image')->add('expiration')
-        ->add('category', EntityType::class, [
-            'placeholder' => 'Wybierz kategorię ogłoszenia',
-            'class' => 'AppBundle:Category',
-            'query_builder' => function(CategoryRepository $er){
-                return $er->createQueryBuilder('c')->orderBy('c.category_name', 'ASC');
-            },
-//            'choice_label' => 'category_name'
-        ])
-        ;
+            ->add('category', EntityType::class, [
+                'placeholder' => 'Wybierz kategorię ogłoszenia',
+                'class' => 'AppBundle:Category',
+                'query_builder' => function (CategoryRepository $er){
+                return $er->createQueryBuilder('c')->orderBy('c.categoryName', 'ASC');
+                },
+                'choice_label' => 'category_name',
+
+            ]);
     }
 //$builder->add('users', EntityType::class, [ 'class' => 'AppBundle:User', 'query_builder' => function (EntityRepository $er) { return $er->createQueryBuilder('u') ->orderBy('u.username', 'ASC'); }, 'choice_label' => 'username', ]);
 
