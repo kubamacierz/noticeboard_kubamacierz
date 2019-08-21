@@ -6,21 +6,19 @@
     {{ form_start(form) }}
     {{ form_label(form.expiration, 'Data wygaśnięcia ogłoszenia') }}
     {{ form_widget(form.expiration, { 'attr': { 'readonly': 'true' } }) }}
-
     {{ form_row(form.title, {'label': 'Tytuł'}) }}
     {{ form_row(form.description, {'label': 'Opis'}) }}
     {{ form_row(form.image, {'label': 'Wstaw zdjęcie'}) }}
     {{ form_row(form.category, {'label': 'Kategoria'}) }}
-
-
-
     <input type="submit" value="Utwórz" />
-{#    {{ form_label(form.title, 'Tytuł') }}#}
     {{ form_end(form) }}
 
     <ul>
         <li>
-            <a href="{{ path('notice_index') }}">Back to the list</a>
+            <a href="{{ path('showallnotices') }}">Wróć do listy wszystkich ogłoszeń</a>
+        </li>
+        <li>
+            <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
     </ul>
 {% endblock %}
