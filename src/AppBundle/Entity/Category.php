@@ -40,7 +40,7 @@ class Category
     }
 
     /**
-     * Set categotyName.
+     * Set categoryName.
      *
      * @param string $categoryName
      *
@@ -74,7 +74,7 @@ class Category
 
     /**
      * @var
-     * @ORM\OneToMany(targetEntity="Notice", mappedBy="categories")
+     * @ORM\OneToMany(targetEntity="Notice", mappedBy="category")
      */
     private $notices;
 

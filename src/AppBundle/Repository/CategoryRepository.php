@@ -10,10 +10,10 @@ namespace AppBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findAllCategories()
-    {
-        $em = $this->getEntityManager();
-        $categories = $em->createQuery('SELECT c FROM AppBundle:Category c')->getResult();
-        return $categories;
-    }
+//    public function findAllCategories()
+//    {
+//        $em = $this->getEntityManager();
+//        $categories = $em->createQuery('SELECT c FROM AppBundle:Category c')->getResult();
+//        return $categories;
+//    }
 }
