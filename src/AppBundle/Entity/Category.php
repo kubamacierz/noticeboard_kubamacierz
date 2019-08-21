@@ -65,12 +65,18 @@ class Category
 
     // Relations
 
+//    /**
+//     * @var
+//     * @ORM\ManyToOne(targetEntity="Notice", inversedBy="categories")
+//     * @ORM\JoinColumn(name="notice_id", referencedColumnName="id")
+//     */
+//    private $notice;
+
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="Notice", inversedBy="categories")
-     * @ORM\JoinColumn(name="notice_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Notice", mappedBy="categories")
      */
-    private $notice;
+    private $notices;
 
     /**
      * Set notice.
@@ -94,5 +100,48 @@ class Category
     public function getNotice()
     {
         return $this->notice;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->notices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add notice.
+     *
+     * @param \AppBundle\Entity\Notice $notice
+     *
+     * @return Category
+     */
+    public function addNotice(\AppBundle\Entity\Notice $notice)
+    {
+        $this->notices[] = $notice;
+
+        return $this;
+    }
+
+    /**
+     * Remove notice.
+     *
+     * @param \AppBundle\Entity\Notice $notice
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeNotice(\AppBundle\Entity\Notice $notice)
+    {
+        return $this->notices->removeElement($notice);
+    }
+
+    /**
+     * Get notices.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotices()
+    {
+        return $this->notices;
     }
 }
