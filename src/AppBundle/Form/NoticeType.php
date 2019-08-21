@@ -26,10 +26,8 @@ class NoticeType extends AbstractType
                 return $er->createQueryBuilder('c')->orderBy('c.categoryName', 'ASC');
                 },
                 'choice_label' => 'category_name',
-
             ]);
     }
-//$builder->add('users', EntityType::class, [ 'class' => 'AppBundle:User', 'query_builder' => function (EntityRepository $er) { return $er->createQueryBuilder('u') ->orderBy('u.username', 'ASC'); }, 'choice_label' => 'username', ]);
 
     /**
      * {@inheritdoc}
