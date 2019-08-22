@@ -19,7 +19,9 @@
             </tr>
             <tr>
                 <th>Image</th>
-                <td>{{ notice.image }}</td>
+{#                <td>{{ notice.image }}</td>#}
+                <td><a href="{{ asset('uploads/images/' ~ notice.imageFilename) }}">View image (jpg)</a>
+                </td>
             </tr>
             <tr>
                 <th>Expiration</th>

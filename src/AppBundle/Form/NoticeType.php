@@ -6,6 +6,7 @@ use AppBundle\Entity\Notice;
 use AppBundle\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,6 +14,8 @@ use AppBundle\Entity\Category;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\LessThan;
+use Symfony\Component\Validator\Constraints\File;
 
 class NoticeType extends AbstractType
 {
@@ -24,12 +27,24 @@ class NoticeType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('image')
+            ->add('image', FileType::class, [
+                'label' => 'Zdjęcie (jpg file)',
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5000k',
+
+                    ])
+                ]
+
+            ])
             ->add('expiration', DateType::class, [
-                'data' => new \DateTime('+2 weeks'),
+                'data' => new \DateTime('+1 weeks'),
                 'constraints' => [
                     new NotBlank(),
-                    new GreaterThan("today")
+                    new GreaterThan("today"),
+                    new LessThan("+8 days")
                 ]
             ])
             ->add('category', EntityType::class, [
