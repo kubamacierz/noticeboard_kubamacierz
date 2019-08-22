@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <th>Expiration</th>
-                <td>{{ notice.expiration }}</td>
+                <td>{{ notice.expiration|date("Y-m-d") }}</td>
             </tr>
         </tbody>
     </table>
@@ -31,7 +31,7 @@
     <ul>
         <li>
 {#            <a href="{{ path('notice_index') }}">Back to the list</a>#}
-            <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.user_id.user.id}) }}">Wróć do listy swoich ogłoszeń</a>
+            <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.userId.user.id}) }}">Wróć do listy swoich ogłoszeń</a>
         </li>
         <li>
             <a href="{{ path('showallnotices') }}">Wróć do listy wszytkich ogłoszeń</a>

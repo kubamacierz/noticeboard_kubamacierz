@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
+use \DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -27,31 +27,52 @@ class Notice
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="expiration", type="string", length=255)
+     * @ORM\Column(name="expiration", type="date", nullable=false)
      */
     private $expiration;
 
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="notices")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="notices")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /** @var ArrayCollection  */
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -136,68 +157,27 @@ class Notice
     }
 
     /**
-     * Set expiration.
-     *
-     * @param string $expiration
-     *
-     * @return Notice
-     */
-    public function setExpiration($expiration)
-    {
-        $this->expiration = $expiration;
-
-        return $this;
-    }
-
-    /**
-     * Get expiration.
-     *
-     * @return string
+     * @return DateTime
      */
     public function getExpiration()
     {
         return $this->expiration;
     }
 
-    // Relations
-
-//    /**
-//     * @var
-//     * @ORM\OneToMany(targetEntity="Category", mappedBy="notice")
-//     */
-//    private $categories;
-
     /**
-     * @var
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="notices")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @param DateTime $expiration
+     * @return Notice
      */
-    private $category;
-
-    public function __construct()
+    public function setExpiration($expiration)
     {
-        $this->categories = new ArrayCollection();
-
-        $expiration = time() + 604800;
-        $dt = new DateTime("@$expiration");
-        $expDate = $dt->format('Y-m-d H:i:s');
-
-        $this->expiration = $expDate;
+        $this->expiration = $expiration;
+        return $this;
     }
-
-    /**
-     * @var
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="notices")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-
 
     /**
      * Add category.
      *
-     * @param \AppBundle\Entity\Category $category
+     * @param Category $category
      *
      * @return Notice
      */
@@ -210,12 +190,13 @@ class Notice
 
     /**
      * Remove category.
+     * TRUE if this collection contained the specified element, FALSE otherwise.
      *
-     * @param \AppBundle\Entity\Category $category
+     * @param Category $category
      *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return boolean
      */
-    public function removeCategory(\AppBundle\Entity\Category $category)
+    public function removeCategory(Category $category)
     {
         return $this->categories->removeElement($category);
     }
@@ -223,22 +204,21 @@ class Notice
     /**
      * Get categories.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getCategories()
     {
         return $this->categories;
     }
 
-
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User|null $user
+     * @param User|null $user
      *
      * @return Notice
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -248,17 +228,16 @@ class Notice
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User|null
+     * @return User|null
      */
     public function getUser()
     {
         return $this->user;
     }
 
-    public function getUser_Id()
+    public function getUserId()
     {
         $this->getUser()->getId();
-//        $userId = $user->getId();
         return $this;
     }
 
@@ -266,11 +245,11 @@ class Notice
     /**
      * Set category.
      *
-     * @param \AppBundle\Entity\Category|null $category
+     * @param Category|null $category
      *
      * @return Notice
      */
-    public function setCategory(\AppBundle\Entity\Category $category = null)
+    public function setCategory(Category $category = null)
     {
         $this->category = $category;
 
@@ -280,7 +259,7 @@ class Notice
     /**
      * Get category.
      *
-     * @return \AppBundle\Entity\Category|null
+     * @return Category|null
      */
     public function getCategory()
     {

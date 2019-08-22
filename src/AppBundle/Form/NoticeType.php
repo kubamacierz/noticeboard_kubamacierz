@@ -5,11 +5,14 @@ namespace AppBundle\Form;
 use AppBundle\Entity\Notice;
 use AppBundle\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use AppBundle\Entity\Category;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class NoticeType extends AbstractType
 {
@@ -18,7 +21,17 @@ class NoticeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('description')->add('image')->add('expiration')
+        $builder
+            ->add('title')
+            ->add('description')
+            ->add('image')
+            ->add('expiration', DateType::class, [
+                'data' => new \DateTime('+2 weeks'),
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThan("today")
+                ]
+            ])
             ->add('category', EntityType::class, [
                 'placeholder' => 'Wybierz kategorię ogłoszenia',
                 'class' => 'AppBundle:Category',

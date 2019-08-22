@@ -21,7 +21,7 @@
                 <td>{{ notice.title }}</td>
                 <td>{{ notice.description }}</td>
                 <td>{{ notice.image }}</td>
-                <td>{{ notice.expiration }}</td>
+                <td>{{ notice.expiration|date("Y-m-d") }}</td>
                 <td>
                     <ul>
                         <li>
