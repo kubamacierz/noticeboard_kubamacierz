@@ -23,6 +23,15 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    /**
+     * @var \DateTime
+     */
+    protected $lastLogin;
+
+    public function getlastLogin()
+    {
+        return $this->lastLogin;
+    }
 
 
     /**
@@ -85,4 +94,5 @@ class User extends BaseUser
     {
         return $this->notices;
     }
+
 }
