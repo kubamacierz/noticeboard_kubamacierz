@@ -69,6 +69,7 @@ class Notice
     /** @var ArrayCollection  */
     private $categories;
 
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();

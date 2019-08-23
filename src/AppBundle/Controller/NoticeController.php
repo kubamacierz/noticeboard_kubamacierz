@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
+//namespace AppBundle\Services;
 
 use AppBundle\Entity\Notice;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,7 +86,7 @@ class NoticeController extends Controller
                 }
 
 
-                $notice->setImageFilename($newFilename);
+                $notice->setImage($newFilename);
             }
 
             $em = $this->getDoctrine()->getManager();

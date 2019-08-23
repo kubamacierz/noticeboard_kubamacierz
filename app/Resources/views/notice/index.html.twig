@@ -20,7 +20,7 @@
                 <td><a href="{{ path('notice_show', { 'id': notice.id }) }}">{{ notice.id }}</a></td>
                 <td>{{ notice.title }}</td>
                 <td>{{ notice.description }}</td>
-                <td>{{ notice.image }}</td>
+                <td><a href="{{ asset('uploads/images/' ~ notice.image) }}">View image (jpg)</a></td>
                 <td>{{ notice.expiration|date("Y-m-d") }}</td>
                 <td>
                     <ul>
