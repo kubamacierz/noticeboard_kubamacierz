@@ -30,11 +30,11 @@ class NoticeController extends Controller
      * @Route("/", name="notice_index")
      * @Method("GET")
      */
-    public function indexAction(UserInterface $user)
+    public function indexAction(?UserInterface $user)
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Notice');
-        if(in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true){
+        if($user AND in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true){
             $notices = $repo->findAll();
         } else {
             /** @var NoticeRepository $repo */
