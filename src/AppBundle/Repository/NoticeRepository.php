@@ -17,4 +17,12 @@ class NoticeRepository extends \Doctrine\ORM\EntityRepository
 
         return $notices;
     }
+
+    public function getActualNoticesById($id)
+    {
+        $em = $this->getEntityManager();
+        $notices = $em->createQuery('SELECT n FROM AppBundle:Notice n WHERE n.expiration > CURRENT_TIMESTAMP() AND n.user = :id')->setParameters(['id' => $id])->getResult();
+
+        return $notices;
+    }
 }

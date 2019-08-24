@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Notices list</h1>
+    <h1 class="text-center my-5">Notices list</h1>
 
-    <table>
+    <table class="table table-hover">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Expiration</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Expiration</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for notice in notices %}
@@ -23,31 +23,32 @@
                 <td><a href="{{ asset('uploads/images/' ~ notice.image) }}">View image (jpg)</a></td>
                 <td>{{ notice.expiration|date("Y-m-d") }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('notice_show', { 'id': notice.id }) }}">Pokaż</a>
-                        </li>
-                        {% if is_granted("ROLE_ADMIN") %}
-                        <li>
-                            <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edytuj</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('notice_delete', { 'id': notice.id }) }}">Usuń</a>
-                        </li>
-                        {% endif %}
-                    </ul>
+                    <a href="{{ path('notice_show', { 'id': notice.id }) }}">Pokaż</a>
+
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edytuj</a>
+                        <a href="{{ path('notice_delete', { 'id': notice.id }) }}">Usuń</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('notice_new') }}">Stwórz nowe ogłoszenie</a>
-        </li>
-        <li>
-            <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
-        </li>
-    </ul>
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <ul class="mt-5 list-group">
+            <li class="list-group-item">
+                <a class="btn btn-primary btn-block" href="{{ path('notice_new') }}">Stwórz nowe ogłoszenie</a>
+            </li>
+            <li class="list-group-item">
+                <a class="btn btn-info btn-block" href="{{ path('menu') }}">Wróć do menu podstawowego</a>
+            </li>
+        </ul>
+    {% else %}
+
+
+        <a class="btn btn-success btn-block mt-5" href="{{ path('homepage') }}">Powrót do strony startowej</a>
+
+    {% endif %}
 {% endblock %}

@@ -191,12 +191,16 @@ class NoticeController extends Controller
     /**
      * @Route("/show/{id}")
      */
-    public function showNoticesByUserIdAction($id)
+    public function showNoticesByUserIdAction()
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($userId);
-        $notices = $user->getNotices();
+//        $notices = $user->getNotices();
+
+        $repo = $em->getRepository('AppBundle:Notice');
+        /** @var NoticeRepository $repo */
+        $notices = $repo->getActualNoticesById($user);
 
         return $this->render(':notice:index.html.twig', ['notices' => $notices]);
     }
