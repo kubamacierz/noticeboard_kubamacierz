@@ -52,6 +52,8 @@ class Notice
      */
     private $expiration;
 
+    // Relations
+
     /**
      * @var
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="notices")
@@ -68,6 +70,12 @@ class Notice
 
     /** @var ArrayCollection  */
     private $categories;
+
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="notice")
+     */
+    private $comments;
 
 
     public function __construct()
