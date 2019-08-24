@@ -5,35 +5,40 @@
 
     <table>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ notice.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ notice.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ notice.description }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-{#                <td>{{ notice.image }}</td>#}
-                <td><a href="{{ asset('uploads/images/' ~ notice.image) }}">View image (jpg)</a>
-                </td>
-            </tr>
-            <tr>
-                <th>Expiration</th>
-                <td>{{ notice.expiration|date("Y-m-d") }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ notice.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ notice.title }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ notice.description }}</td>
+        </tr>
+        {% if notice.image %}
+        <tr>
+            <th>Image</th>
+            {#                <td>{{ notice.image }}</td>#}
+            <td><a href="{{ asset('uploads/images/' ~ notice.image) }}"><img
+                            src="{{ asset('uploads/images/' ~ notice.image) }}" width="200"
+                            title="View image (jpg)"/></a>
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th>Expiration</th>
+            <td>{{ notice.expiration|date("Y-m-d") }}</td>
+        </tr>
         </tbody>
     </table>
 
     <ul>
         <li>
-{#            <a href="{{ path('notice_index') }}">Back to the list</a>#}
-            <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.userId.user.id}) }}">Wróć do listy swoich ogłoszeń</a>
+            {#            <a href="{{ path('notice_index') }}">Back to the list</a>#}
+            <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.userId.user.id}) }}">Wróć do listy swoich
+                ogłoszeń</a>
         </li>
         <li>
             <a href="{{ path('showallnotices') }}">Wróć do listy wszytkich ogłoszeń</a>

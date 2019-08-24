@@ -25,6 +25,20 @@ class NoticeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+//        dump($options);
+//        die;
+
+        $forUserDays = 8;
+        $forSuperUserDays = 15;
+        if($options['user']->hasRole('ROLE_ADMIN')){
+            $days = $forSuperUserDays;
+            $defaultWeeks = 2;
+        } else  {
+            $days = $forUserDays;
+        }
+//        dump($options, $days, $options['user']->hasRole('ROLE_ADMIN'));
+//        die;
+
         $builder
             ->add('title')
             ->add('description')
@@ -44,11 +58,11 @@ class NoticeType extends AbstractType
 
             ])
             ->add('expiration', DateType::class, [
-                'data' => new \DateTime('+1 weeks'),
+                'data' => new \DateTime("+$defaultWeeks weeks"),
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThan("today"),
-                    new LessThan("+8 days")
+                    new LessThan("+$days days")
                 ]
             ])
             ->add('category', EntityType::class, [
@@ -69,6 +83,7 @@ class NoticeType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Notice'
         ));
+        $resolver->setRequired('user');
     }
 
     /**

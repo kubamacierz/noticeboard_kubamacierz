@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 //namespace AppBundle\Services;
 
 use AppBundle\Entity\Notice;
+use AppBundle\Repository\NoticeRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -32,8 +33,9 @@ class NoticeController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $notices = $em->getRepository('AppBundle:Notice')->findAll();
+        /** @var NoticeRepository $repo */
+        $repo = $em->getRepository('AppBundle:Notice');
+        $notices = $repo->getActualNotices();
 
         return $this->render('notice/index.html.twig', array(
             'notices' => $notices,
@@ -67,7 +69,7 @@ class NoticeController extends Controller
     {
         $notice = new Notice();
         $notice->setUser($user);
-        $form = $this->createForm('AppBundle\Form\NoticeType', $notice);
+        $form = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user'=> $user]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
