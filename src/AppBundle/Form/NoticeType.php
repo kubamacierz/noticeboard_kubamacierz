@@ -30,13 +30,14 @@ class NoticeType extends AbstractType
 
         $forUserDays = 8;
         $forSuperUserDays = 15;
-        if($options['user']->hasRole('ROLE_ADMIN')){
+        if($options['user']->hasRole('ROLE_ADMIN') OR $options['user']->hasRole('ROLE_SUPER_USER')){
             $days = $forSuperUserDays;
             $defaultWeeks = 2;
-        } else  {
+        } elseif ($options['user']->hasRole('ROLE_USER')) {
             $days = $forUserDays;
+            $defaultWeeks = 1;
         }
-//        dump($options, $days, $options['user']->hasRole('ROLE_ADMIN'));
+//        dump($options, $days, $options['user']->hasRole('ROLE_SUPER_USER'));
 //        die;
 
         $builder

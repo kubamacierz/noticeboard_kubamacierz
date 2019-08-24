@@ -30,12 +30,18 @@ class NoticeController extends Controller
      * @Route("/", name="notice_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(UserInterface $user)
     {
         $em = $this->getDoctrine()->getManager();
-        /** @var NoticeRepository $repo */
         $repo = $em->getRepository('AppBundle:Notice');
-        $notices = $repo->getActualNotices();
+        if(in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true){
+            $notices = $repo->findAll();
+        } else {
+            /** @var NoticeRepository $repo */
+            $notices = $repo->getActualNotices();
+        }
+
+
 
         return $this->render('notice/index.html.twig', array(
             'notices' => $notices,
