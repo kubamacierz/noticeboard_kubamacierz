@@ -164,7 +164,6 @@ class NoticeController extends Controller
     {
         $form = $this->createDeleteForm($notice);
         $form->handleRequest($request);
-        $url=$request->getBaseUrl();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
