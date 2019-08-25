@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style_commentbox.css" type="text/css">
+{% endblock %}
+
 {% block body %}
     <h1>Notice</h1>
 
@@ -53,22 +57,35 @@
     </ul>
 
     {% if notice.comments %}
-        <h3>Komentarze</h3>
+        <div class="detailBox">
+        <div class="titleBox">
+            <label>Komentarze</label>
+            <button type="button" class="close" aria-hidden="true">&times;</button>
+        </div>
         {% for comment in notice.comments %}
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="comment-container d-inline-block pl-3 align-top">
-                        <span class="commenter-name">{{ comment.commentText }}</span>
-                    </div>
+            <div class="commentBox">
+                <div class="actionBox">
+                    <ul class="commentList">
+                        <li>
+                            <div class="commentText">
+                                <p class="taskDescription">{{ comment.commentText }}</p>
+                            </div>
+                        </li>
+
+                    </ul>
+
                 </div>
+
             </div>
         {% endfor %}
     {% endif %}
 
-{#    {{ render(controller('AppBundle:Comment:new', { 'notice': notice })) }}#}
     {{ form_start(form) }}
+    {{ form_row(form.commentText, {'label': 'Wstaw komentaż'}) }}
     {{ form_widget(form) }}
-    <input type="submit" value="Create" />
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary"/>
+    </div>
     {{ form_end(form) }}
-
+    </div>
 {% endblock %}
