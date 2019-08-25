@@ -18,14 +18,14 @@
             <td>{{ notice.description }}</td>
         </tr>
         {% if notice.image %}
-        <tr>
-            <th>Image</th>
-            {#                <td>{{ notice.image }}</td>#}
-            <td><a href="{{ asset('uploads/images/' ~ notice.image) }}"><img
-                            src="{{ asset('uploads/images/' ~ notice.image) }}" width="200"
-                            title="View image (jpg)"/></a>
-            </td>
-        </tr>
+            <tr>
+                <th>Image</th>
+                {#                <td>{{ notice.image }}</td>#}
+                <td><a href="{{ asset('uploads/images/' ~ notice.image) }}"><img
+                                src="{{ asset('uploads/images/' ~ notice.image) }}" width="200"
+                                title="View image (jpg)"/></a>
+                </td>
+            </tr>
         {% endif %}
         <tr>
             <th>Expiration</th>
@@ -34,7 +34,7 @@
         </tbody>
     </table>
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    <ul>
+        <ul>
         <li>
             <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.userId.user.id}) }}">Wróć do listy swoich
                 ogłoszeń</a>
@@ -45,10 +45,30 @@
         <li>
             <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
-        {% else %}
-            <li>
-                <a href="{{ path('notice_index') }}">Wróć do listy wszytkich ogłoszeń</a>
-            </li>
+    {% else %}
+        <li>
+            <a href="{{ path('notice_index') }}">Wróć do listy wszytkich ogłoszeń</a>
+        </li>
     {% endif %}
     </ul>
+
+    {% if notice.comments %}
+        <h3>Komentarze</h3>
+        {% for comment in notice.comments %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="comment-container d-inline-block pl-3 align-top">
+                        <span class="commenter-name">{{ comment.commentText }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{#    {{ render(controller('AppBundle:Comment:new', { 'notice': notice })) }}#}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
 {% endblock %}

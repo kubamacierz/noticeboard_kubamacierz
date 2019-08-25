@@ -274,4 +274,45 @@ class Notice
     {
         return $this->category;
     }
+
+    /**
+     * Add comment.
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return Notice
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment.
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        return $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+//    public function __toString()
+//    {
+//        return 'any string';
+//    }
 }

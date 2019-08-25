@@ -71,4 +71,28 @@ class Comment
      * @ORM\JoinColumn(name="notice_id", referencedColumnName="id")
      */
     private $notice;
+
+    /**
+     * Set notice.
+     *
+     * @param \AppBundle\Entity\Notice|null $notice
+     *
+     * @return Comment
+     */
+    public function setNotice(\AppBundle\Entity\Notice $notice = null)
+    {
+        $this->notice = $notice;
+
+        return $this;
+    }
+
+    /**
+     * Get notice.
+     *
+     * @return \AppBundle\Entity\Notice|null
+     */
+    public function getNotice()
+    {
+        return $this->notice;
+    }
 }

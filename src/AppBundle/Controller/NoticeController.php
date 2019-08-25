@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 //namespace AppBundle\Services;
 
+use AppBundle\Entity\Comment;
 use AppBundle\Entity\Notice;
 use AppBundle\Repository\NoticeRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,13 +35,12 @@ class NoticeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Notice');
-        if($user AND in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true){
+        if ($user AND in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true) {
             $notices = $repo->findAll();
         } else {
             /** @var NoticeRepository $repo */
             $notices = $repo->getActualNotices();
         }
-
 
 
         return $this->render('notice/index.html.twig', array(
@@ -75,15 +75,15 @@ class NoticeController extends Controller
     {
         $notice = new Notice();
         $notice->setUser($user);
-        $form = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user'=> $user]);
+        $form = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $user]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form['image']->getData();
-            if($image){
+            if ($image) {
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
                 try {
                     $image->move(
                         $this->getParameter('images_directory'),
@@ -114,18 +114,29 @@ class NoticeController extends Controller
      * Finds and displays a notice entity.
      *
      * @Route("/{id}", name="notice_show")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function showAction(Request $request, Notice $notice)
     {
         $deleted = $this->deleteActionIfShouldBeDeleted($request, $notice);
-        if($deleted) {
+        if ($deleted) {
             return $deleted;
+        }
+
+        $comment = new Comment();
+        $form = $this->createForm('AppBundle\Form\CommentType', $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $comment->setNotice($notice);
+            $em->persist($comment);
+            $em->flush();
         }
 
         return $this->render('notice/show.html.twig', array(
             'notice' => $notice,
-            //'delete_form' => $deleteForm->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -138,7 +149,7 @@ class NoticeController extends Controller
     public function editAction(Request $request, Notice $notice)
     {
         $deleteForm = $this->createDeleteForm($notice);
-        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user'=> $this->getUser()]);
+        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $this->getUser()]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -188,8 +199,7 @@ class NoticeController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('notice_delete', array('id' => $notice->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     /**
