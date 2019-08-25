@@ -33,19 +33,22 @@
         </tr>
         </tbody>
     </table>
-
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <ul>
         <li>
-            {#            <a href="{{ path('notice_index') }}">Back to the list</a>#}
             <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.userId.user.id}) }}">Wróć do listy swoich
                 ogłoszeń</a>
         </li>
         <li>
-            <a href="{{ path('showallnotices') }}">Wróć do listy wszytkich ogłoszeń</a>
+            <a href="{{ path('notice_index') }}">Wróć do listy wszytkich ogłoszeń</a>
         </li>
         <li>
             <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
-
+        {% else %}
+            <li>
+                <a href="{{ path('notice_index') }}">Wróć do listy wszytkich ogłoszeń</a>
+            </li>
+    {% endif %}
     </ul>
 {% endblock %}

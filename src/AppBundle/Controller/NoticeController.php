@@ -30,11 +30,11 @@ class NoticeController extends Controller
      * @Route("/", name="notice_index")
      * @Method("GET")
      */
-    public function indexAction(UserInterface $user)
+    public function indexAction(?UserInterface $user)
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Notice');
-        if(in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true){
+        if($user AND in_array(strtoupper('ROLE_ADMIN'), $user->getRoles(), true) === true){
             $notices = $repo->findAll();
         } else {
             /** @var NoticeRepository $repo */
@@ -116,14 +116,16 @@ class NoticeController extends Controller
      * @Route("/{id}", name="notice_show")
      * @Method("GET")
      */
-    public function showAction(Notice $notice)
+    public function showAction(Request $request, Notice $notice)
     {
-        $deleteForm = $this->createDeleteForm($notice);
-
+        $deleted = $this->deleteActionIfShouldBeDeleted($request, $notice);
+        if($deleted) {
+            return $deleted;
+        }
 
         return $this->render('notice/show.html.twig', array(
             'notice' => $notice,
-            'delete_form' => $deleteForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -136,7 +138,7 @@ class NoticeController extends Controller
     public function editAction(Request $request, Notice $notice)
     {
         $deleteForm = $this->createDeleteForm($notice);
-        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice);
+        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user'=> $this->getUser()]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -158,7 +160,7 @@ class NoticeController extends Controller
      * @Route("/{id}", name="notice_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Notice $notice)
+    public function deleteActionIfShouldBeDeleted(Request $request, Notice $notice)
     {
         $form = $this->createDeleteForm($notice);
         $form->handleRequest($request);
@@ -167,9 +169,11 @@ class NoticeController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($notice);
             $em->flush();
+            return $this->redirectToRoute("menu");
         }
 
-        return $this->redirectToRoute('notice_index');
+        return false;
+
     }
 
     /**
@@ -191,13 +195,27 @@ class NoticeController extends Controller
     /**
      * @Route("/show/{id}")
      */
-    public function showNoticesByUserIdAction($id)
+    public function showNoticesByUserIdAction()
     {
+
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($userId);
-        $notices = $user->getNotices();
+//        $notices = $user->getNotices();
 
-        return $this->render(':notice:index.html.twig', ['notices' => $notices]);
+        $repo = $em->getRepository('AppBundle:Notice');
+        /** @var NoticeRepository $repo */
+        $notices = $repo->getActualNoticesById($user);
+
+        $deleteForms = [];
+        foreach ($notices as $notice) {
+            $deleteFormView = $this->createDeleteForm($notice)->createView();
+            $deleteForms[] = $deleteFormView;
+        }
+
+        return $this->render('AppBundle:LayoutController:show_user_notices.html.twig', [
+            'notices' => $notices,
+            'delete_forms' => $deleteForms
+        ]);
     }
 }
