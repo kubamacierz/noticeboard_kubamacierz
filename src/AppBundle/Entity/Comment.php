@@ -28,6 +28,12 @@ class Comment
      */
     private $commentText;
 
+    /**
+     * @var
+     * @ORM\Column(name="creation_date", type="date", nullable=true)
+     */
+    private $creationDate;
+
 
     /**
      * Get id.
@@ -94,5 +100,34 @@ class Comment
     public function getNotice()
     {
         return $this->notice;
+    }
+
+    /**
+     * Set creationDate.
+     *
+     * @param \DateTime|null $creationDate
+     *
+     * @return Comment
+     */
+    public function setCreationDate($creationDate = null)
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creationDate.
+     *
+     * @return \DateTime|null
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    public function __construct()
+    {
+        $this->creationDate = new \DateTime();
     }
 }
