@@ -22,6 +22,12 @@
             <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
     </ul>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 {% endblock %}
 
 {#  {% block body %}#}

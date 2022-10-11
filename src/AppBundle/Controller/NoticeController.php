@@ -9,11 +9,13 @@ use AppBundle\Repository\NoticeRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Firewall\ContextListener;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -149,7 +151,7 @@ class NoticeController extends Controller
      * @Route("/{id}/edit", name="notice_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Notice $notice, UserInterface $user)
+    public function editAction(Request $request, Notice $notice, UserInterface $user, SessionInterface $session)
     {
 
 //        $notice = new Notice();
@@ -180,7 +182,8 @@ class NoticeController extends Controller
             $em->persist($notice);
             $em->flush();
 
-            $this->addFlash('success', 'Notice Updated! Inaccuracies squashed!');
+//            $this->addFlash('success', 'Notice Updated! Inaccuracies squashed!');
+            $session->getFlashBag()->add('success','Pomyslnie dokonano edycji!');
 
             return $this->redirectToRoute('notice_edit', array('id' => $notice->getId()));
         }
