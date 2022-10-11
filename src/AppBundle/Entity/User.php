@@ -55,7 +55,7 @@ class User extends BaseUser
 
     /**
      * @var
-     * @ORM\OneToMany(targetEntity="Notice", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Notice", mappedBy="user", cascade={"remove"})
      */
     private $notices;
 
