@@ -1,21 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Notice edit</h1>
+    <h1>Edytuj ogłoszenie</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    {{ form_start(form) }}
+    {{ form_label(form.expiration, 'Data wygaśnięcia ogłoszenia') }}
+    {{ form_widget(form.expiration, { }) }}
+    {{ form_row(form.title, {'label': 'Tytuł'}) }}
+    {{ form_row(form.description, {'label': 'Opis'}) }}
+    {{ form_row(form.image, {'label': 'Wstaw zdjęcie'}) }}
+    {{ form_row(form.category, {'label': 'Kategoria'}) }}
+    <input type="submit" value="Edytuj" />
+    {{ form_end(form) }}
+
 
     <ul>
         <li>
-            <a href="{{ path('notice_index') }}">Back to the list</a>
+            <a href="{{ path('showallnotices') }}">Wróć do listy wszystkich ogłoszeń</a>
         </li>
         <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
+            <a href="{{ path('menu') }}">Wróć do menu podstawowego</a>
         </li>
     </ul>
 {% endblock %}
+
+{#  {% block body %}#}
+{#    <h1>Notice edit</h1>#}
+
+{#    {{ form_start(edit_form) }}#}
+{#        {{ form_widget(edit_form) }}#}
+{#        <input type="submit" value="Edit" />#}
+{#    {{ form_end(edit_form) }}#}
+
+{#    <ul>#}
+{#        <li>#}
+{#            <a href="{{ path('notice_index') }}">Back to the list</a>#}
+{#        </li>#}
+{#        <li>#}
+{#            {{ form_start(delete_form) }}#}
+{#                <input type="submit" value="Delete">#}
+{#            {{ form_end(delete_form) }}#}
+{#        </li>#}
+{#    </ul>#}
+{#{% endblock %}#}

@@ -118,6 +118,9 @@ class NoticeController extends Controller
      */
     public function showAction(Request $request, Notice $notice)
     {
+
+
+
         $deleted = $this->deleteActionIfShouldBeDeleted($request, $notice);
         if ($deleted) {
             return $deleted;
@@ -146,23 +149,63 @@ class NoticeController extends Controller
      * @Route("/{id}/edit", name="notice_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Notice $notice)
+    public function editAction(Request $request, Notice $notice, UserInterface $user)
     {
-        $deleteForm = $this->createDeleteForm($notice);
-        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $this->getUser()]);
-        $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+//        $notice = new Notice();
+//        $notice->setUser($user);
+        $form = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $user]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form['image']->getData();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+                try {
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $e->getMessage();
+                }
+
+
+                $notice->setImage($newFilename);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($notice);
+            $em->flush();
+
+            $this->addFlash('success', 'Notice Updated! Inaccuracies squashed!');
 
             return $this->redirectToRoute('notice_edit', array('id' => $notice->getId()));
         }
 
         return $this->render('notice/edit.html.twig', array(
             'notice' => $notice,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form' => $form->createView(),
         ));
+
+
+//        $deleteForm = $this->createDeleteForm($notice);
+//        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $this->getUser()]);
+//        $editForm->handleRequest($request);
+//
+//        if ($editForm->isSubmitted() && $editForm->isValid()) {
+//            $this->getDoctrine()->getManager()->flush();
+//
+//            return $this->redirectToRoute('notice_edit', array('id' => $notice->getId()));
+//        }
+//
+//        return $this->render('notice/edit.html.twig', array(
+//            'notice' => $notice,
+//            'edit_form' => $editForm->createView(),
+//            'delete_form' => $deleteForm->createView(),
+//        ));
     }
 
     /**
