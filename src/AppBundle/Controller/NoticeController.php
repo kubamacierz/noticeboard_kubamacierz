@@ -43,10 +43,15 @@ class NoticeController extends Controller
             /** @var NoticeRepository $repo */
             $notices = $repo->getActualNotices();
         }
-
+        $deleteForms = [];
+        foreach ($notices as $notice) {
+            $deleteFormView = $this->createDeleteForm($notice)->createView();
+            $deleteForms[] = $deleteFormView;
+        }
 
         return $this->render('notice/index.html.twig', array(
             'notices' => $notices,
+            'delete_forms' => $deleteForms
         ));
     }
 
@@ -75,8 +80,13 @@ class NoticeController extends Controller
      */
     public function newAction(Request $request, UserInterface $user)
     {
+//        print($request->getPathInfo());
         $notice = new Notice();
         $notice->setUser($user);
+        if(! in_array('ROLE_ADMIN',$user->getRoles() )){
+            $notice->setExpiration(new DateTime('+7 days'));
+        }
+
         $form = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $user]);
         $form->handleRequest($request);
 
@@ -120,8 +130,6 @@ class NoticeController extends Controller
      */
     public function showAction(Request $request, Notice $notice)
     {
-
-
 
         $deleted = $this->deleteActionIfShouldBeDeleted($request, $notice);
         if ($deleted) {
@@ -214,8 +222,7 @@ class NoticeController extends Controller
     /**
      * Deletes a notice entity.
      *
-     * @Route("/{id}", name="notice_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="notice_delete", methods={"GET","POST"})
      */
     public function deleteActionIfShouldBeDeleted(Request $request, Notice $notice)
     {
@@ -258,6 +265,7 @@ class NoticeController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($userId);
 //        $notices = $user->getNotices();
+
 
         $repo = $em->getRepository('AppBundle:Notice');
         /** @var NoticeRepository $repo */

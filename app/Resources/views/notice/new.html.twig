@@ -4,8 +4,8 @@
     <h1>Stwórz nowe ogłoszenie</h1>
 
     {{ form_start(form) }}
-    {{ form_label(form.expiration, 'Data wygaśnięcia ogłoszenia') }}
-    {{ form_widget(form.expiration, { }) }}
+{#    {{ form_label(form.expiration, 'Data wygaśnięcia ogłoszenia') }}#}
+{#    {{ form_widget(form.expiration, { }) }}#}
     {{ form_row(form.title, {'label': 'Tytuł'}) }}
     {{ form_row(form.description, {'label': 'Opis'}) }}
     {{ form_row(form.image, {'label': 'Wstaw zdjęcie'}) }}

@@ -4,8 +4,10 @@
     <h1>Edytuj ogłoszenie</h1>
 
     {{ form_start(form) }}
+{#    {% if is_granted("ROLE_ADMIN") %}#}
     {{ form_label(form.expiration, 'Data wygaśnięcia ogłoszenia') }}
     {{ form_widget(form.expiration, { }) }}
+{#    {% endif %}#}
     {{ form_row(form.title, {'label': 'Tytuł'}) }}
     {{ form_row(form.description, {'label': 'Opis'}) }}
     {{ form_row(form.image, {'label': 'Wstaw zdjęcie'}) }}
