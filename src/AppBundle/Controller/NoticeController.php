@@ -164,6 +164,7 @@ class NoticeController extends Controller
 
 //        $notice = new Notice();
 //        $notice->setUser($user);
+//        $notice->setExpiration($notice->getExpiration());
         $form = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $user]);
         $form->handleRequest($request);
 
