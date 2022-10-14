@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,6 +37,10 @@ class NoticeType extends AbstractType
 //        if($options['user']->hasRole('ROLE_ADMIN')===true){print('ok!!!!!!');}else{print('not ok!');}
 //        dump($options);
 //        dump($builder);
+//        dump(function (FormInterface $form){
+//           $data = $form->getData();
+//           return $data;
+//        });
 //        die;
 
         $forUserDays = 8;
@@ -123,6 +128,10 @@ class NoticeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+
+//        dump($resolver->isDefined('user'));
+//        dump($resolver);
+//        die;
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Notice'
         ));

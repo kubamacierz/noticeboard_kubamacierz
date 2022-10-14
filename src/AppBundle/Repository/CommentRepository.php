@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class CommentRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getCommentsByNoticeId($id)
+    {
+        $em = $this->getEntityManager();
+        $comments = $em->createQuery('SELECT c FROM AppBundle:Comment c WHERE c.notice = :id')->setParameters(['id' => $id])->getResult();
+
+        return $comments;
+    }
 }

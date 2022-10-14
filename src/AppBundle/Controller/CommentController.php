@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
+use AppBundle\Repository\CommentRepository;
 use AppBundle\Entity\Notice;
+use AppBundle\Repository\NoticeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -129,7 +131,7 @@ class CommentController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('comment_index');
+        return $this->redirectToRoute('notice_index');
     }
 
     /**
@@ -146,5 +148,33 @@ class CommentController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+
+    /**
+     * @Route("/admin/show/{id}", name="comments_by_notice_id")
+     */
+    public function showCommentsByNoticeIdAction(Notice $notice)
+    {
+        $noticeId = $notice->getId();
+
+//        dump($noticeId);
+//        die;
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:Comment');
+        /** @var CommentRepository $repo */
+        $comments = $repo->getCommentsByNoticeId($noticeId);
+
+        $deleteForms = [];
+        foreach ($comments as $comment) {
+            $deleteFormView = $this->createDeleteForm($comment)->createView();
+            $deleteForms[] = $deleteFormView;
+        }
+
+        return $this->render('comment/index.html.twig', [
+            'comments' => $comments,
+            'delete_forms' => $deleteForms
+        ]);
+
     }
 }
