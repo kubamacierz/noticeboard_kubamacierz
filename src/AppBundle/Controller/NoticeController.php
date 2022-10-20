@@ -128,7 +128,7 @@ class NoticeController extends Controller
      * @Route("/{id}", name="notice_show")
      * @Method({"GET", "POST"})
      */
-    public function showAction(Request $request, Notice $notice)
+    public function showAction(Request $request, Notice $notice, ?UserInterface $user)
     {
 
         $deleted = $this->deleteActionIfShouldBeDeleted($request, $notice);
@@ -143,6 +143,7 @@ class NoticeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $comment->setNotice($notice);
+            $comment->setUser($user);
             $em->persist($comment);
             $em->flush();
         }

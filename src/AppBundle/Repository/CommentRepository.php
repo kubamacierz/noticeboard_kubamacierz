@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Expr\Join;
+
 /**
  * CommentRepository
  *
@@ -15,6 +18,20 @@ class CommentRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         $comments = $em->createQuery('SELECT c FROM AppBundle:Comment c WHERE c.notice = :id')->setParameters(['id' => $id])->getResult();
 
+        return $comments;
+    }
+
+    public function getCommentsByUserId($id)
+    {
+        $em = $this->getEntityManager();
+//        $comments = $em->createQuery("SELECT c FROM AppBundle:Comment c join AppBundle:Notice n where n.user = :id")->setParameters(['id' => $id])->getResult();
+//        $qb = $em->createQueryBuilder()->select('c')->from('AppBundle:Comment', 'c')->join('AppBundle:Notice', 'n')->where('n.user = :id')->setParameter('id',$id)->getQuery();
+        $comments = $em->createQuery("SELECT c FROM AppBundle:Comment c WHERE c.user = :id")->setParameters(['id' => $id])->getResult();;
+//        echo $qb->getDQL();
+//        die;
+//        $comments = $qb->getResult();
+//        echo $qb->getDQL();
+//        die;
         return $comments;
     }
 }

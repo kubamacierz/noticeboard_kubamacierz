@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Comment
@@ -100,6 +102,43 @@ class Comment
     public function getNotice()
     {
         return $this->notice;
+    }
+
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * Set user.
+     *
+     * @param User|null $user
+     *
+     * @return Comment
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function getUserId()
+    {
+        $this->getUser()->getId();
+        return $this;
     }
 
     /**

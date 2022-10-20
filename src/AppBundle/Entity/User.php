@@ -28,6 +28,9 @@ class User extends BaseUser
      */
     protected $lastLogin;
 
+    /**
+     * @return \DateTime|null
+     */
     public function getlastLogin()
     {
         return $this->lastLogin;
@@ -44,10 +47,14 @@ class User extends BaseUser
         return $this->id;
     }
 
+    /**
+     *
+     */
     public function __construct()
     {
         parent::__construct();
         $this->notices = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->roles = ["ROLE_USER"];
     }
 
@@ -93,6 +100,48 @@ class User extends BaseUser
     public function getNotices()
     {
         return $this->notices;
+    }
+
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="user", cascade={"remove"})
+     */
+    private $comments;
+
+    /**
+     * Add comment.
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment.
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        return $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 
 }

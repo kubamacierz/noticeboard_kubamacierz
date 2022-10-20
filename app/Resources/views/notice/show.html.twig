@@ -81,12 +81,14 @@
         {% endfor %}
     {% endif %}
 
-    {{ form_start(form) }}
-    {{ form_row(form.commentText, {'label': 'Wstaw komentaż'}) }}
-    {{ form_widget(form) }}
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary"/>
-    </div>
-    {{ form_end(form) }}
-    </div>
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {{ form_start(form) }}
+        {{ form_row(form.commentText, {'label': 'Wstaw komentaż'}) }}
+        {{ form_widget(form) }}
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary"/>
+        </div>
+        {{ form_end(form) }}
+        </div>
+    {% endif %}
 {% endblock %}

@@ -3,14 +3,17 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\User;
 use AppBundle\Repository\CommentRepository;
 use AppBundle\Entity\Notice;
 use AppBundle\Repository\NoticeRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Comment controller.
@@ -43,22 +46,23 @@ class CommentController extends Controller
      * @Method({"GET", "POST"})
      * @param Notice $notice
      * @param Request $request
+     * @param User $user
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Notice $notice, Request $request)
+    public function newAction(Notice $notice, Request $request, UserInterface $user)
     {
 
         $comment = new Comment();
-        $form = $this->createForm('AppBundle\Form\CommentType', $comment);
+        $comment->setUser($user);
+        $form = $this->createForm('AppBundle\Form\CommentType', $comment, ['user' => $user]);
         $form->handleRequest($request);
 
 
-
 //        if ($form->isSubmitted() && $form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $comment->setNotice($notice);
-//            $em->persist($comment);
-//            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $comment->setNotice($notice);
+        $em->persist($comment);
+        $em->flush();
 //
 ////            return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
 //        }
@@ -67,9 +71,9 @@ class CommentController extends Controller
             'comment' => $comment,
             'form' => $form->createView(),
             'n' => $notice,
-            's'=> $form->isSubmitted(),
+            's' => $form->isSubmitted(),
             'v' => $form->isValid(),
-            'r' => $request
+            'r' => $request,
         ));
     }
 
@@ -130,8 +134,13 @@ class CommentController extends Controller
             $em->remove($comment);
             $em->flush();
         }
+//        $deleteForms = [];
+//        foreach ($comments as $comment) {
+//            $deleteFormView = $this->createDeleteForm($comment)->createView();
+//            $deleteForms[] = $deleteFormView;
 
         return $this->redirectToRoute('notice_index');
+
     }
 
     /**
@@ -146,8 +155,7 @@ class CommentController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('comment_delete', array('id' => $comment->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 
 
@@ -175,6 +183,33 @@ class CommentController extends Controller
             'comments' => $comments,
             'delete_forms' => $deleteForms
         ]);
+
+    }
+
+    /**
+     * @Route("/admin/show1/{id}", name="comments_by_user_id")
+     */
+    public function showCommentsByUserId(Request $request)
+    {
+        $pathInfo = $request->getPathInfo();
+        $userId = $pathInfo[-1];
+//        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+//        $user = $em->getRepository('AppBundle:User')->find($userId);
+//        echo $userId;
+        $repo = $em->getRepository('AppBundle:Comment');
+        /** @var CommentRepository $repo */
+        $comments = $repo->getCommentsByUserId($userId);
+
+        $deleteForms = [];
+        foreach ($comments as $comment) {
+            $deleteFormView = $this->createDeleteForm($comment)->createView();
+            $deleteForms[] = $deleteFormView;
+        }
+            return $this->render('comment/index.html.twig', [
+                'comments' => $comments,
+                'delete_forms' => $deleteForms
+            ]);
 
     }
 }

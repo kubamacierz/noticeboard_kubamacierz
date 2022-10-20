@@ -34,6 +34,9 @@
                         <li>
                             <a href="{{ path('user_delete', { 'id': user.id }) }}">Usuń użytkownika</a>
                         </li>
+                        <li>
+                            <a href="{{ path('comments_by_user_id', { 'id': user.id }) }}">Wyświetl komentarze tego użytkownika</a>
+                        </li>
                     </ul>
                 </td>
             </tr>
