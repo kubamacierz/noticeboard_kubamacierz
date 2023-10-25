@@ -49,28 +49,33 @@ class NoticeController extends Controller
             $deleteForms[] = $deleteFormView;
         }
 
-        return $this->render('notice/index.html.twig', array(
+        return $this->render(
+//            'notice/index.html.twig',
+            'AppBundle:LayoutController:show_notices.html.twig',
+            [
             'notices' => $notices,
-            'delete_forms' => $deleteForms
-        ));
+            'delete_forms' => $deleteForms,
+            'tableTitle' => 'All notices'
+        ]);
     }
 
-    /**
-     * @Route("/showall", name="showallnotices")
-     */
-    public function showAllNoticesAction(UserInterface $user)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $notices = $em->getRepository('AppBundle:Notice')->findAll();
-
-        $userId = $user->getId();
-
-        return $this->render('AppBundle:LayoutController:show_all_notices.html.twig', array(
-            'notices' => $notices,
-            'id' => $userId,
-        ));
-    }
+//    /**
+//     * @Route("/showall", name="showallnotices")
+//     */
+//    public function showAllNoticesAction(UserInterface $user)
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $notices = $em->getRepository('AppBundle:Notice')->findAll();
+//
+//        $userId = $user->getId();
+//
+//        return $this->render('AppBundle:LayoutController:show_all_notices.html.twig', array(
+//            'notices' => $notices,
+//            'id' => $userId,
+//            'username' => $user
+//        ));
+//    }
 
     /**
      * Creates a new notice entity.
@@ -113,12 +118,16 @@ class NoticeController extends Controller
             $em->persist($notice);
             $em->flush();
 
-            return $this->redirectToRoute('notice_show', array('id' => $notice->getId()));
+            return $this->redirectToRoute('notice_show', array(
+                'id' => $notice->getId(),
+                'username' => $user
+            ));
         }
 
         return $this->render('notice/new.html.twig', array(
             'notice' => $notice,
             'form' => $form->createView(),
+            'username' => $user
         ));
     }
 
@@ -260,7 +269,7 @@ class NoticeController extends Controller
     /**
      * @Route("/show/{id}")
      */
-    public function showNoticesByUserIdAction()
+    public function showNoticesByUserIdAction(UserInterface $user)
     {
 
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
@@ -279,9 +288,14 @@ class NoticeController extends Controller
             $deleteForms[] = $deleteFormView;
         }
 
-        return $this->render('AppBundle:LayoutController:show_user_notices.html.twig', [
+        return $this->render(
+//            'AppBundle:LayoutController:show_user_notices.html.twig',
+            'AppBundle:LayoutController:show_notices.html.twig',
+            [
             'notices' => $notices,
-            'delete_forms' => $deleteForms
+            'delete_forms' => $deleteForms,
+            'username' => $user,
+            'tableTitle' => 'Your notices'
         ]);
     }
 }

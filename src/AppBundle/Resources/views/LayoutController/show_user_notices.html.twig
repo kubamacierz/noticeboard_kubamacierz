@@ -1,41 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 class="text-center my-5">Twoje ogłoszenia</h1>
+    {% include "AppBundle:LayoutController:test.html.twig" %}
+{#    <h1 class="text-center my-5">Your notices</h1>#}
 
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Image</th>
-            <th>Expiration</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for notice in notices %}
-            <tr>
-                <td><a href="{{ path('notice_show', { 'id': notice.id }) }}">{{ notice.id }}</a></td>
-                <td>{{ notice.title }}</td>
-                <td>{{ notice.description }}</td>
-                <td><a href="{{ asset('uploads/images/' ~ notice.image) }}">View image (jpg)</a></td>
-                <td>{{ notice.expiration|date("Y-m-d") }}</td>
-                <td>
-                    <a href="{{ path('notice_show', { 'id': notice.id }) }}">Pokaż</a>
+{#    <table class="table table-hover">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Title</th>#}
+{#            <th>Content</th>#}
+{#            <th>Image</th>#}
+{#            <th>Expiration date</th>#}
+{#            <th></th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for notice in notices %}#}
+{#            <tr>#}
+{#                <td>{{ notice.title }}</td>#}
+{#                <td>{{ notice.description }}</td>#}
+{#                <td><a href="{{ asset('uploads/images/' ~ notice.image) }}">View image (jpg)</a></td>#}
+{#                <td>{{ notice.expiration|date("Y-m-d") }}</td>#}
+{#                <td>#}
+{#                    <a href="{{ path('notice_show', { 'id': notice.id }) }}">Pokaż</a>#}
 
 
-                        <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edytuj</a>
-                    {{ form_start(delete_forms[loop.index0]) }}
-                    <input type="submit" value="Usuń">
-                    {{ form_end(delete_forms[loop.index0]) }}
+{#                        <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edytuj</a>#}
+{#                    {{ form_start(delete_forms[loop.index0]) }}#}
+{#                    <input type="submit" value="Usuń">#}
+{#                    {{ form_end(delete_forms[loop.index0]) }}#}
 
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{#                </td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
 
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}

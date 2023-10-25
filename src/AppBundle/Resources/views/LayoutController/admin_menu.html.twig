@@ -1,19 +1,13 @@
-{% extends "::base.html.twig" %}
+{# {% extends "::base.html.twig" %} #}
 
 {% block body %}
-    <h2>Menu administratora</h2>
-    <div>
-        <p>Jesteś zalogowany jako mistrz
-            <span> <b><i>{{ adminname }}</b></i> </span>
-        </p>
-    </div>
-    <div>
-        <a href="{{ path('fos_user_security_logout') }}">Wyloguj się</a>
-    </div>
-
-    <ul>
-        <li><a href="{{ path('user_index') }}">Wyświetl wsystkich użytkowników</a></li>
-        <li><a href="{{ path('notice_index') }}">Wyświetl wsystkie ogłoszenia</a></li>
+    <h5>Admin Menu</h5>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item"><a href="{{ path('user_index') }}" class="nav-link">All Users</a>
+        </li>
+        <li class="nav-item"><a href="{{ path('notice_index') }}" class="nav-link">All Notices including expired</a>
+        </li>
     </ul>
 
 {% endblock %}

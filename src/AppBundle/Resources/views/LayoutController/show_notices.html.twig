@@ -3,7 +3,7 @@
 {% block body %}
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-             <ul class="nav nav-pills flex-column">
+            <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('notice_new') }}">Add new notice</a>
                 </li>
@@ -21,6 +21,7 @@
             </ul>
         </nav>
     {% endif %}
+
     <h4 class="text-center my-5">{{ tableTitle }}</h4>
 
     <table class="table table-hover">
@@ -51,13 +52,15 @@
                 <td>
                     <a href="{{ path('notice_show', { 'id': notice.id }) }}">Show</a>
 
-                    {% if is_granted("ROLE_ADMIN") %}
+                    {% if is_granted("ROLE_ADMIN") or (app.user.username is defined and app.user.username == notice.user ) %}
                         <a href="{{ path('notice_edit', { 'id': notice.id }) }}"> | Edit</a>
-                        {#                        <a href="{{ path('notice_delete', { 'id': notice.id }) }}">Usuń</a> #}
-                        <a href="{{ path('comments_by_notice_id', { 'id': notice.id }) }}"> | Show comments</a>
                         {{ form_start(delete_forms[loop.index0]) }}
                         <button type="submit" value="Delete">Delete</button>
                         {{ form_end(delete_forms[loop.index0]) }}
+                    {% endif %}
+                    {% if is_granted("ROLE_ADMIN") %}
+                        {#                        <a href="{{ path('notice_delete', { 'id': notice.id }) }}">Usuń</a> #}
+                        <a href="{{ path('comments_by_notice_id', { 'id': notice.id }) }}">Show comments</a>
                     {% endif %}
                 </td>
             </tr>
@@ -65,4 +68,4 @@
         </tbody>
     </table>
 
-    {% endblock %}
+{% endblock %}

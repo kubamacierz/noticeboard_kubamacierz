@@ -5,20 +5,22 @@
     {% if is_granted("ROLE_ADMIN") %}
         {{ render(path('admin_menu')) }}
     {% else %}
-        <h2>Wybierz co chcesz zrobić</h2>
-        <div>
-            <p>Jesteś zalogowany jako
-                <span> <b><i>{{ username }}</b></i> </span>
-            </p>
-        </div>
-        <div>
-            <a href="{{ path('fos_user_security_logout') }}">Wyloguj się</a>
-        </div>
-        <ul>
-            <li><a href="{{ path('notice_new') }}">Dodaj ogłoszenie</a></li>
-            <li><a href="{{ path('app_notice_shownoticesbyuserid', { 'id': id }) }}">Wyświetl swoje ogłoszenia </a></li>
-            <li><a href="{{ path('notice_index') }}">Wyświetl wszystkie ogłoszenia</a></li>
-            {#        <li>{{ id }}</li>#}
-        </ul>
+{#        <div class="jumbotron text-center" style="margin-bottom:0">#}
+{#            <h1>Tablica ogłoszeń</h1>#}
+{#            <p>Jesteś zalogowany jako#}
+{#                <span> <b><i>{{ username }}</i></b> </span>#}
+{#            </p>#}
+{#            <span class="float-right"><a href="{{ path('fos_user_security_logout') }}" class="nav-link">Wyloguj się</a></span>#}
+{#        </div>#}
+
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><a href="{{ path('notice_new') }}" class="nav-link">Add Notice</a></li>
+                <li class="nav-item"><a href="{{ path('app_notice_shownoticesbyuserid', { 'id': id }) }}"
+                                        class="nav-link">Your Notices</a></li>
+                <li class="nav-item"><a href="{{ path('notice_index') }}" class="nav-link">All Notices</a></li>
+                {#        <li>{{ id }}</li> #}
+            </ul>
+        </nav>
     {% endif %}
 {% endblock %}

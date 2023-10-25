@@ -34,4 +34,10 @@ class CommentRepository extends \Doctrine\ORM\EntityRepository
 //        die;
         return $comments;
     }
+
+//    public function getUsernameOfComment($commentId)
+//    {
+//        $em = $this->getEntityManager();
+//        $username = $em->createQuery("SELECT ")
+//    }
 }

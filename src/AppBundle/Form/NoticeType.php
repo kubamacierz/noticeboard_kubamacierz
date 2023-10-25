@@ -59,7 +59,7 @@ class NoticeType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('image', FileType::class, [
-                'label' => 'Zdjęcie (jpg file)',
+                'label' => 'Picture (jpg file)',
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
@@ -68,14 +68,14 @@ class NoticeType extends AbstractType
                         'mimeTypes' => [
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Dodaj zdjęcie w formacie .jpg lub .jpeg'
+                        'mimeTypesMessage' => 'Add picture in .jpg or .jpeg format'
                     ])
                 ]
 
             ])
 
             ->add('category', EntityType::class, [
-                'placeholder' => 'Wybierz kategorię ogłoszenia',
+                'placeholder' => 'Choose Notice Category',
                 'class' => 'AppBundle:Category',
                 'query_builder' => function (CategoryRepository $er){
                 return $er->createQueryBuilder('c')->orderBy('c.categoryName', 'ASC');
