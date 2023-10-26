@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Notice;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,7 +19,7 @@ class LayoutController extends Controller
     {
         $userId = $user->getId();
         $userName = $user->getUsername();
-        return $this->render('AppBundle:LayoutController:show_menu.html.twig', [
+        return $this->render('AppBundle:LayoutController:first_menu.html.twig', [
             'id' => $userId,
             'username' => $userName,
         ]);
@@ -33,7 +34,11 @@ class LayoutController extends Controller
             return $this->render('AppBundle:LayoutController:first_menu.html.twig');
         }
         $userName = $user->getUsername();
-        return $this->render('AppBundle:LayoutController:first_menu.html.twig', ['username' => $userName]);
+        $userId = $user->getId();
+        return $this->render('AppBundle:LayoutController:first_menu.html.twig', [
+            'username' => $userName,
+            'id' => $userId,
+        ]);
     }
 
 }

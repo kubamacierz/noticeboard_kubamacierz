@@ -1,16 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-                <a href="{{ path('notice_index') }}" class="nav-link">All Notices</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('menu') }}" class="nav-link">Go back</a>
-            </li>
-        </ul>
-    </nav>
+    {% include "AppBundle:LayoutController:navbar.html.twig" %}
+
     <h4>Add Your Notice</h4>
 
     {{ form_start(form) }}

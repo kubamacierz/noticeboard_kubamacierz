@@ -4,8 +4,8 @@
 
 
 {% block body %}
-    {% if is_granted("ROLE_ADMIN") %}
-        {{ render(path('admin_menu')) }}
+{#    {% if is_granted("ROLE_ADMIN") %}#}
+{#        {{ render(path('admin_menu')) }}#}
 
 {#    {% elseif is_granted("IS_AUTHENTICATED_REMEMBERED") %}#}
 {#        <h2>Jesteś już zalogowany jako {{ username }}</h2>#}
@@ -13,16 +13,41 @@
 {#            <li><a href="{{ path('menu') }}">Powrót do Menu użytkownika</a></li>#}
 {#            <li><a href="{{ path('fos_user_security_logout') }}">Wyloguj się</a></li>#}
 {#        </ul>#}
-    {% else %}
-        {#        <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1> #}
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a href="{{ path('fos_user_security_login') }}" class="nav-link text-danger">Log in</a>
-                </li>
-                <li class="nav-item"><a href="{{ path('fos_user_registration_register') }}" class="nav-link text-danger">Register</a></li>
-                <li class="nav-item"><a href="{{ path('notice_index') }}" class="nav-link">All notices</a>
-                </li>
-            </ul>
-        </nav>
+{#    {% else %}#}
+{#        #}{#        <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1> #}
+{#        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">#}
+{#            <ul class="nav nav-pills flex-column">#}
+{#                <li class="nav-item"><a href="{{ path('fos_user_security_login') }}" class="nav-link text-danger">Log in</a>#}
+{#                </li>#}
+{#                <li class="nav-item"><a href="{{ path('fos_user_registration_register') }}" class="nav-link text-danger">Register</a></li>#}
+{#                <li class="nav-item"><a href="{{ path('notice_index') }}" class="nav-link">All notices</a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </nav>#}
+{#    {% endif %}#}
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="nav nav-pills flex-column">
+    {% if is_granted("ROLE_ADMIN") %}
+{#        {{ render(path('menu')) }}#}
+        {% include "AppBundle:LayoutController:admin_menu.html.twig" %}
     {% endif %}
+
+    {% if is_granted("ROLE_USER") == false %}
+            <li class="nav-item"><a href="{{ path('fos_user_security_login') }}" class="nav-link text-danger">Log in</a>
+            </li>
+            <li class="nav-item"><a href="{{ path('fos_user_registration_register') }}" class="nav-link text-danger">Register</a></li>
+    {% endif %}
+    {% if is_granted("ROLE_USER") %}
+        {#        <h1>Witaj nieznajomy na Tablicy Ogłoszeń!</h1> #}
+            <li class="nav-item"><a href="{{ path('notice_new') }}" class="nav-link">Add Notice</a></li>
+            <li class="nav-item"><a href="{{ path('app_notice_shownoticesbyuserid', { 'id': id }) }}"
+                                    class="nav-link">Your Notices</a></li>
+{#        {% include "AppBundle:LayoutController:navbar.html.twig" %}#}
+    {% endif %}
+
+            <li class="nav-item"><a href="{{ path('notice_index') }}" class="nav-link">All notices</a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}

@@ -16,13 +16,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AdminController extends Controller
 {
     /**
-     * @Route("/admin_menu", name="admin_menu")
+     * @Route("/", name="homepage")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function showAdminMenuAction(UserInterface $user)
     {
         $adminName = $user->getUsername();
-        return $this->render('AppBundle:LayoutController:admin_menu.html.twig', [
+        return $this->render('AppBundle:LayoutController:first_menu.html.twig', [
             'adminname' => $adminName
         ]);
     }

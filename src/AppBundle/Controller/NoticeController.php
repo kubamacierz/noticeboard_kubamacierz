@@ -49,13 +49,14 @@ class NoticeController extends Controller
             $deleteForms[] = $deleteFormView;
         }
 
+
         return $this->render(
 //            'notice/index.html.twig',
             'AppBundle:LayoutController:show_notices.html.twig',
             [
             'notices' => $notices,
             'delete_forms' => $deleteForms,
-            'tableTitle' => 'All notices'
+            'tableTitle' => 'All notices',
         ]);
     }
 
@@ -207,9 +208,12 @@ class NoticeController extends Controller
             return $this->redirectToRoute('notice_edit', array('id' => $notice->getId()));
         }
 
+        $userId = $user->getId();
+
         return $this->render('notice/edit.html.twig', array(
             'notice' => $notice,
             'form' => $form->createView(),
+            'id' => $userId
         ));
 
 
@@ -271,7 +275,6 @@ class NoticeController extends Controller
      */
     public function showNoticesByUserIdAction(UserInterface $user)
     {
-
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($userId);

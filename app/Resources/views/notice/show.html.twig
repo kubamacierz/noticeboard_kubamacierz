@@ -1,30 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{#{% block stylesheets %}#}
-{#    <link rel="stylesheet" href="/style_commentbox.css" type="text/css">#}
-{#{% endblock %}#}
-
 {% block body %}
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-                <a href="{{ path('app_notice_shownoticesbyuserid', {'id': notice.userId.user.id}) }}" class="nav-link">Your Notices</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('notice_index') }}" class="nav-link">All Notices</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('menu') }}" class="nav-link">Go back</a>
-            </li>
-            {% else %}
-                <li class="nav-item">
-                    <a href="{{ path('notice_index') }}" class="nav-link">All Notices</a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-    <h1>Notice</h1>
+
+    {% include "AppBundle:LayoutController:navbar.html.twig" %}
+
+    <h4>Notice</h4>
 
     <table>
         <tbody>
