@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Users list</h1>
 
-    <table>
+    {% include "AppBundle:LayoutController:navbar.html.twig" %}
+
+    <h4>Users list</h4>
+
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Id</th>
@@ -24,20 +27,10 @@
                     {% endif %}
                 </td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('user_show', { 'id': user.id }) }}">Wyświetl dane</a>
-                        </li>
-{#                        <li>#}
-{#                            <a href="{{ path('user_edit', { 'id': user.id }) }}">edit</a>#}
-{#                        </li>#}
-                        <li>
-                            <a href="{{ path('user_delete', { 'id': user.id }) }}">Usuń użytkownika</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('comments_by_user_id', { 'id': user.id }) }}">Wyświetl komentarze tego użytkownika</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('user_show', { 'id': user.id }) }}">User data</a>
+                    <a href="{{ path('user_edit', { 'id': user.id }) }}"> | Edit User</a>
+                    <a href="{{ path('user_delete', { 'id': user.id }) }}"> | Delete User</a>
+                    <a href="{{ path('comments_by_user_id', { 'id': user.id }) }}"> | User Comments</a>
                 </td>
             </tr>
         {% endfor %}

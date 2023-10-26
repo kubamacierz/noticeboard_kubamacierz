@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Comments list</h1>
 
-    <table>
+    {% include "AppBundle:LayoutController:navbar.html.twig" %}
+    <h4>Comments list</h4>
+
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Commenttext</th>
+                <th>Username</th>
+                <th>Comment text</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -15,24 +18,21 @@
         {% for comment in comments %}
             <tr>
                 <td><a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.id }}</a></td>
+                <td>{{ comment.user }}</td>
 {#                <td><a href="{{ path('comment_show', { 'notice_id': comment.notice_id }) }}">{{ comment.notice_id }}</a></td>#}
                 <td>{{ comment.commentText }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('comment_show', { 'id': comment.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('comment_edit', { 'id': comment.id }) }}">edit</a>
-                        </li>
-                        <li>
+
+                            <a href="{{ path('comment_show', { 'id': comment.id }) }}">Show</a>
+
+                            <a href="{{ path('comment_edit', { 'id': comment.id }) }}"> | Edit</a>
+
                             {% if is_granted("ROLE_ADMIN") %}
                             {{ form_start(delete_forms[loop.index0]) }}
-                            <input type="submit" value="Usuń">
+                                <button type="submit">Delete</button>
                             {{ form_end(delete_forms[loop.index0]) }}
                             {% endif %}
-                        </li>
-                    </ul>
+
                 </td>
             </tr>
         {% endfor %}
