@@ -8,7 +8,6 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            {#            <th>Id</th> #}
             <th>Title</th>
             <th>Content</th>
             <th>Picture</th>
@@ -19,7 +18,6 @@
         <tbody>
         {% for notice in notices %}
             <tr>
-                {#                <td><a href="{{ path('notice_show', { 'id': notice.id }) }}">{{ notice.id }}</a></td> #}
                 <td>{{ notice.title }}</td>
                 <td>
                     {% if notice.description|length > 20 %}
@@ -40,7 +38,6 @@
                         {{ form_end(delete_forms[loop.index0]) }}
                     {% endif %}
                     {% if is_granted("ROLE_ADMIN") %}
-                        {#                        <a href="{{ path('notice_delete', { 'id': notice.id }) }}">Usuń</a> #}
                         <a href="{{ path('comments_by_notice_id', { 'id': notice.id }) }}">Show comments</a>
                     {% endif %}
                 </td>

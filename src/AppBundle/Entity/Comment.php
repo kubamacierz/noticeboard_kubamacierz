@@ -104,6 +104,11 @@ class Comment
         return $this->notice;
     }
 
+    public function getNoticeId()
+    {
+        return $this->getNotice()->getId();
+    }
+
     /**
      * @var
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
@@ -140,6 +145,12 @@ class Comment
         $this->getUser()->getId();
         return $this;
     }
+
+    /**
+     * Get notice
+     *
+     * @return Notice|null
+     */
 
     /**
      * Set creationDate.

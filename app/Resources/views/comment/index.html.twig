@@ -3,7 +3,9 @@
 {% block body %}
 
     {% include "AppBundle:LayoutController:navbar.html.twig" %}
-    <h4>Comments list</h4>
+    <h4>Comments list for notice
+        "{{ notice.title }}"
+    </h4>
 
     <table class="table table-hover">
         <thead>
@@ -41,7 +43,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('comment_new') }}">Create a new comment</a>
+            <a href="{{ path('comment_new_for_notice', { 'id': comments[0].noticeId }) }}">Create a new comment</a>
         </li>
     </ul>
 {% endblock %}

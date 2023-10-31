@@ -1,16 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Użytkownik nr {{ user.id }}</h1>
-
     <table class="table table-hover">
         <tbody>
+            <tr>
+                <th></th>
+                <td><b>User data</b></td>
+            </tr>
             <tr>
                 <th>Id</th>
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
-                <th>Nazwa użytkownia</th>
+                <th>User name</th>
                 <td>{{ user.username }}</td>
             </tr>
             <tr>
@@ -18,11 +20,11 @@
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <th>Data ostaniego logowania</th>
+                <th>Last login date</th>
                 <td>{{ user.lastLogin|date("Y-m-d H:i:s") }}</td>
             </tr>
             <tr>
-                <th>Uprawnienia</th>
+                <th>Permissions</th>
                 <td>
                 {% for role in user.roles %}
                     {{ role }}{% if false == loop.last %}, {% endif %}
@@ -34,14 +36,14 @@
 
     <ul>
         <li>
-            <a href="{{ path('user_index') }}">Wróć do listy wszystkich użytkowników</a>
+            <a href="{{ path('user_index') }}">All Users</a>
         </li>
         <li>
-            <a href="{{ path('user_edit', { 'id': user.id }) }}">Edytuj</a>
+            <a href="{{ path('user_edit', { 'id': user.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Usuń">
+                <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
     </ul>

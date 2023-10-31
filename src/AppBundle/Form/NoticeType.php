@@ -26,22 +26,11 @@ use Symfony\Component\Validator\Constraints\File;
 
 class NoticeType extends AbstractType
 {
-
-
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        if($options['user']->hasRole('ROLE_ADMIN')===true){print('ok!!!!!!');}else{print('not ok!');}
-//        dump($options);
-//        dump($builder);
-//        dump(function (FormInterface $form){
-//           $data = $form->getData();
-//           return $data;
-//        });
-//        die;
 
         $forUserDays = 8;
         $forSuperUserDays = 15;
@@ -52,8 +41,6 @@ class NoticeType extends AbstractType
             $days = $forUserDays;
             $defaultWeeks = 1;
         }
-//        dump($options, $days, $options['user']->hasRole('ROLE_SUPER_USER'));
-//        die;
 
         $builder
             ->add('title')
@@ -71,9 +58,7 @@ class NoticeType extends AbstractType
                         'mimeTypesMessage' => 'Add picture in .jpg or .jpeg format'
                     ])
                 ]
-
             ])
-
             ->add('category', EntityType::class, [
                 'placeholder' => 'Choose Notice Category',
                 'class' => 'AppBundle:Category',
@@ -92,35 +77,6 @@ class NoticeType extends AbstractType
                 ]
             ]);
         }
-//        }
-// elseif ($options['user']->hasRole('ROLE_USER')===true) {
-//            $builder
-//                ->add('title')
-//                ->add('description')
-//                ->add('image', FileType::class, [
-//                    'label' => 'Zdjęcie (jpg file)',
-//                    'required' => false,
-//                    'mapped' => false,
-//                    'constraints' => [
-//                        new File([
-//                            'maxSize' => '5000k',
-//                            'mimeTypes' => [
-//                                'image/jpeg',
-//                            ],
-//                            'mimeTypesMessage' => 'Dodaj zdjęcie w formacie .jpg lub .jpeg'
-//                        ])
-//                    ]
-//
-//                ])
-//                ->add('category', EntityType::class, [
-//                    'placeholder' => 'Wybierz kategorię ogłoszenia',
-//                    'class' => 'AppBundle:Category',
-//                    'query_builder' => function (CategoryRepository $er){
-//                        return $er->createQueryBuilder('c')->orderBy('c.categoryName', 'ASC');
-//                    },
-//                    'choice_label' => 'category_name',
-//                ]);
-//        }
     }
 
     /**
@@ -129,9 +85,6 @@ class NoticeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
 
-//        dump($resolver->isDefined('user'));
-//        dump($resolver);
-//        die;
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Notice'
         ));
@@ -145,6 +98,4 @@ class NoticeType extends AbstractType
     {
         return 'appbundle_notice';
     }
-
-
 }

@@ -51,30 +51,56 @@ class CommentController extends Controller
      */
     public function newAction(Notice $notice, Request $request, UserInterface $user)
     {
-
         $comment = new Comment();
         $comment->setUser($user);
         $form = $this->createForm('AppBundle\Form\CommentType', $comment, ['user' => $user]);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $comment->setNotice($notice);
+            $em->persist($comment);
+            $em->flush();
 
-//        if ($form->isSubmitted() && $form->isValid()) {
-        $em = $this->getDoctrine()->getManager();
-        $comment->setNotice($notice);
-        $em->persist($comment);
-        $em->flush();
-//
-////            return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
-//        }
+            return $this->redirectToRoute('comment_show', ['id' => $comment->getId()]);
+        }
 
-        return $this->render('comment/new.html.twig', array(
-            'comment' => $comment,
+        return $this->render('comment/new.html.twig', [
             'form' => $form->createView(),
-            'n' => $notice,
-            's' => $form->isSubmitted(),
-            'v' => $form->isValid(),
-            'r' => $request,
-        ));
+            'comment' => $comment
+        ]);
+    }
+
+    /**
+     * Creates a new comment entity.
+     *
+     * @Route("/new/{id}", name="comment_new_for_notice")
+     * @Method({"GET", "POST"})
+     * @param Notice $notice
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function newCommentForSpecifiedNotice(Notice $notice, Request $request, UserInterface $user)
+    {
+        $comment = new Comment();
+        $comment->setNotice($notice);
+        $comment->setUser($user);
+        $form = $this->createForm('AppBundle\Form\CommentType', $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($comment);
+            $em->flush();
+
+            return $this->redirectToRoute('comment_show', ['id' => $comment->getId()]);
+        }
+        return $this->render('comment/new.html.twig', [
+            'form' => $form->createView(),
+            'comment' => $comment
+        ]);
     }
 
     /**
@@ -87,10 +113,10 @@ class CommentController extends Controller
     {
         $deleteForm = $this->createDeleteForm($comment);
 
-        return $this->render('comment/show.html.twig', array(
+        return $this->render('comment/show.html.twig', [
             'comment' => $comment,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -108,14 +134,14 @@ class CommentController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('comment_edit', array('id' => $comment->getId()));
+            return $this->redirectToRoute('comment_edit', ['id' => $comment->getId()]);
         }
 
-        return $this->render('comment/edit.html.twig', array(
+        return $this->render('comment/edit.html.twig', [
             'comment' => $comment,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -134,10 +160,6 @@ class CommentController extends Controller
             $em->remove($comment);
             $em->flush();
         }
-//        $deleteForms = [];
-//        foreach ($comments as $comment) {
-//            $deleteFormView = $this->createDeleteForm($comment)->createView();
-//            $deleteForms[] = $deleteFormView;
 
         return $this->redirectToRoute('notice_index');
 
@@ -153,7 +175,7 @@ class CommentController extends Controller
     private function createDeleteForm(Comment $comment)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('comment_delete', array('id' => $comment->getId())))
+            ->setAction($this->generateUrl('comment_delete', ['id' => $comment->getId()]))
             ->setMethod('DELETE')
             ->getForm();
     }
@@ -181,7 +203,8 @@ class CommentController extends Controller
 
         return $this->render('comment/index.html.twig', [
             'comments' => $comments,
-            'delete_forms' => $deleteForms
+            'delete_forms' => $deleteForms,
+            'notice' => $notice
         ]);
 
     }
@@ -193,10 +216,7 @@ class CommentController extends Controller
     {
         $pathInfo = $request->getPathInfo();
         $userId = $pathInfo[-1];
-//        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
-//        $user = $em->getRepository('AppBundle:User')->find($userId);
-//        echo $userId;
         $repo = $em->getRepository('AppBundle:Comment');
         /** @var CommentRepository $repo */
         $comments = $repo->getCommentsByUserId($userId);

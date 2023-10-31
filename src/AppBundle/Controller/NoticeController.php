@@ -51,7 +51,6 @@ class NoticeController extends Controller
 
 
         return $this->render(
-//            'notice/index.html.twig',
             'AppBundle:LayoutController:show_notices.html.twig',
             [
             'notices' => $notices,
@@ -60,23 +59,6 @@ class NoticeController extends Controller
         ]);
     }
 
-//    /**
-//     * @Route("/showall", name="showallnotices")
-//     */
-//    public function showAllNoticesAction(UserInterface $user)
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $notices = $em->getRepository('AppBundle:Notice')->findAll();
-//
-//        $userId = $user->getId();
-//
-//        return $this->render('AppBundle:LayoutController:show_all_notices.html.twig', array(
-//            'notices' => $notices,
-//            'id' => $userId,
-//            'username' => $user
-//        ));
-//    }
 
     /**
      * Creates a new notice entity.
@@ -86,7 +68,6 @@ class NoticeController extends Controller
      */
     public function newAction(Request $request, UserInterface $user)
     {
-//        print($request->getPathInfo());
         $notice = new Notice();
         $notice->setUser($user);
         if(! in_array('ROLE_ADMIN',$user->getRoles() )){
@@ -119,17 +100,17 @@ class NoticeController extends Controller
             $em->persist($notice);
             $em->flush();
 
-            return $this->redirectToRoute('notice_show', array(
+            return $this->redirectToRoute('notice_show', [
                 'id' => $notice->getId(),
                 'username' => $user
-            ));
+            ]);
         }
 
-        return $this->render('notice/new.html.twig', array(
+        return $this->render('notice/new.html.twig', [
             'notice' => $notice,
             'form' => $form->createView(),
             'username' => $user
-        ));
+        ]);
     }
 
     /**
@@ -158,10 +139,10 @@ class NoticeController extends Controller
             $em->flush();
         }
 
-        return $this->render('notice/show.html.twig', array(
+        return $this->render('notice/show.html.twig', [
             'notice' => $notice,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -202,36 +183,18 @@ class NoticeController extends Controller
             $em->persist($notice);
             $em->flush();
 
-//            $this->addFlash('success', 'Notice Updated! Inaccuracies squashed!');
-            $session->getFlashBag()->add('success','Pomyslnie dokonano edycji!');
+            $session->getFlashBag()->add('success','Edition was successful!');
 
-            return $this->redirectToRoute('notice_edit', array('id' => $notice->getId()));
+            return $this->redirectToRoute('notice_edit', ['id' => $notice->getId()]);
         }
 
         $userId = $user->getId();
 
-        return $this->render('notice/edit.html.twig', array(
+        return $this->render('notice/edit.html.twig', [
             'notice' => $notice,
             'form' => $form->createView(),
             'id' => $userId
-        ));
-
-
-//        $deleteForm = $this->createDeleteForm($notice);
-//        $editForm = $this->createForm('AppBundle\Form\NoticeType', $notice, ['user' => $this->getUser()]);
-//        $editForm->handleRequest($request);
-//
-//        if ($editForm->isSubmitted() && $editForm->isValid()) {
-//            $this->getDoctrine()->getManager()->flush();
-//
-//            return $this->redirectToRoute('notice_edit', array('id' => $notice->getId()));
-//        }
-//
-//        return $this->render('notice/edit.html.twig', array(
-//            'notice' => $notice,
-//            'edit_form' => $editForm->createView(),
-//            'delete_form' => $deleteForm->createView(),
-//        ));
+        ]);
     }
 
     /**
@@ -265,7 +228,7 @@ class NoticeController extends Controller
     private function createDeleteForm(Notice $notice)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('notice_delete', array('id' => $notice->getId())))
+            ->setAction($this->generateUrl('notice_delete', ['id' => $notice->getId()]))
             ->setMethod('DELETE')
             ->getForm();
     }
@@ -278,8 +241,6 @@ class NoticeController extends Controller
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($userId);
-//        $notices = $user->getNotices();
-
 
         $repo = $em->getRepository('AppBundle:Notice');
         /** @var NoticeRepository $repo */
@@ -292,7 +253,6 @@ class NoticeController extends Controller
         }
 
         return $this->render(
-//            'AppBundle:LayoutController:show_user_notices.html.twig',
             'AppBundle:LayoutController:show_notices.html.twig',
             [
             'notices' => $notices,

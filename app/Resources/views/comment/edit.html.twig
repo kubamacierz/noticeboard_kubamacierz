@@ -10,7 +10,10 @@
 
     <ul>
         <li>
-            <a href="{{ path('comment_index') }}">Back to the list</a>
+            <a href="{{ path('comments_by_notice_id', { 'id': comment.noticeId }) }}">
+                Back to comments of notice no {{ comment.noticeId }}
+            </a>
+
         </li>
         <li>
             {{ form_start(delete_form) }}

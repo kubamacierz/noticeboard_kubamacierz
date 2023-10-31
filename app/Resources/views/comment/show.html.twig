@@ -10,7 +10,7 @@
                 <td>{{ comment.id }}</td>
             </tr>
             <tr>
-                <th>Commenttext</th>
+                <th>Comment text</th>
                 <td>{{ comment.commentText }}</td>
             </tr>
         </tbody>
@@ -18,7 +18,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('comment_index') }}">Back to the list</a>
+            <a href="{{ path('comments_by_notice_id', { 'id': comment.noticeId }) }}">Back to comments of notice no {{ comment.noticeId }}</a>
         </li>
         <li>
             <a href="{{ path('comment_edit', { 'id': comment.id }) }}">Edit</a>

@@ -8,11 +8,11 @@
         <input type="submit" value="Create" />
     {{ form_end(form) }}
 
-    {{ dump(n,s,v,r) }}
-
     <ul>
         <li>
-            <a href="{{ path('comment_index') }}">Back to the list</a>
+            <a href="{{ path('comments_by_notice_id', { 'id': comment.noticeId }) }}">
+                Back to comments of notice no {{ comment.noticeId }}
+            </a>
         </li>
     </ul>
 {% endblock %}
